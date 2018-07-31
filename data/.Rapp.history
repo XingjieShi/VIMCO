@@ -1,0 +1,73 @@
+fge = function(H, p)#
+{#
+   sig = outer(1:p, 1:p, FUN = function(i,j) ((abs(i-j)+1)^(2*H) - 2*abs(i-j)^(2*H) + (abs(i-j)-1)^(2*H))/2)#
+   diag(sig)=1#
+   sig#
+}#
+rho = 0#
+type = c("AR", "FGE")[1]#
+B = 50#
+estErr  = matrix(0, nrow=B, ncol=5)#
+estErr0 = matrix(0, nrow=B, ncol=5)#
+n = 300#
+p = 200#
+K = 5
+getwd()
+setwd("/Users/xingjieshi/Documents/Cloud/Research/variationBayes/codes/packages/vimco/data/")
+X   = rmvnorm(n, mean=rep(0, p))#
+sigma.beta = rep(sqrt(1), K)#
+bet = matrix(0, nrow = p, ncol = K)#
+lambda = 0.05#
+eta = rbinom(p, 1, lambda)#
+alpha = 1#
+gam = matrix(rbinom(p*K, 1, alpha), ncol=K)#
+for (k in 1:K){#
+    bet[, k] = rnorm(p, mean = 0, sd = sigma.beta[k]) * gam[,k] * eta #
+}#
+#
+if (type == "AR") { #
+    sigma = outer(1:K, 1:K, FUN = function(x, y) rho^(abs(x - y))) #
+}   else sigma = fge(rho, K)#
+#
+lp  = X %*% bet#
+sigma.e = diag(sqrt(diag(var(lp)))) %*% sigma %*% diag(sqrt(diag(var(lp))))#
+err = rmvnorm(n, rep(0, K), sigma.e)#
+Y   = lp + err#
+diag(var(lp)/(var(lp)+var(err)))
+library(mvtnorm)
+X   = rmvnorm(n, mean=rep(0, p))#
+sigma.beta = rep(sqrt(1), K)#
+bet = matrix(0, nrow = p, ncol = K)#
+lambda = 0.05#
+eta = rbinom(p, 1, lambda)#
+alpha = 1#
+gam = matrix(rbinom(p*K, 1, alpha), ncol=K)#
+for (k in 1:K){#
+    bet[, k] = rnorm(p, mean = 0, sd = sigma.beta[k]) * gam[,k] * eta #
+}#
+#
+if (type == "AR") { #
+    sigma = outer(1:K, 1:K, FUN = function(x, y) rho^(abs(x - y))) #
+}   else sigma = fge(rho, K)#
+#
+lp  = X %*% bet#
+sigma.e = diag(sqrt(diag(var(lp)))) %*% sigma %*% diag(sqrt(diag(var(lp))))#
+err = rmvnorm(n, rep(0, K), sigma.e)#
+Y   = lp + err#
+diag(var(lp)/(var(lp)+var(err)))
+library(vimco)
+tic = proc.time()#
+fit0 = emInd(X, Y)#
+toc = proc.time() #
+print(toc - tic)#
+print(which(diff(fit0$LowerBound) < 0))
+tic = proc.time()#
+fit = emMultiple(X, Y)#
+toc = proc.time()#
+print(toc - tic)
+save()
+ls()
+data_sim = list(X=X, Y=Y)
+saveRDS(data_sim, file="data_sim.rds")
+str(data_sim)
+remove.packages("vimco")

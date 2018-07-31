@@ -1,0 +1,19 @@
+Package: vimco
+Type: Package
+Title: Variational Inference for Multiple Correlated Outcomes in GWAS
+Version: 0.1.0
+Date: 2018-04-19
+Author: Xingjie Shi
+Maintainer: Xingjie Shi <shixingjie0615@gmail.com>
+Description: Efficient variational inference procedures for GWAS with multiple quantitative traits, based on a multivariate linear method. The Bayesian variable selection method is adopted, and a scalable variational EM algorithm is used. Details are refer to the paper linked to via the URL below.
+URL: https://arxiv.org/abs/1807.10467
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: false
+Imports: Rcpp (>= 0.12.12)
+LinkingTo: Rcpp, RcppArmadillo, BH
+RoxygenNote: 6.1.0
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
