@@ -3,7 +3,6 @@
 
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
-#include <omp.h>
 #include <stdio.h>
 #include <bitset>
 #include <math.h>
