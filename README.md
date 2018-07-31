@@ -18,4 +18,4 @@ library(vimco)
 ## Replicate simulation results in Shi et al. (2018)
 All the simulation results can be reproduced by using the code at simulation. 
 Before running simulation to reproduce the results, please familarize yourself with **VIMCO** using 'VIMCO' vignette. 
-Simulation results can be reproduced by following steps in the [**VIMCO** vignette]().
+Simulation results can be reproduced by following steps in the [**VIMCO** vignette](https://github.com/XingjieShi/VIMCO/blob/master/vignettes/vimco.Rmd).
