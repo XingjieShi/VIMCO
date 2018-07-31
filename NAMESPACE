@@ -1,3 +1,3 @@
-useDynLib(vimco, .registration=TRUE)
+useDynLib(vimco)
 importFrom(Rcpp, evalCpp)
 exportPattern("^[[:alpha:]]+")
