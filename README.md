@@ -3,7 +3,7 @@
 **vimco** package proves a Bayesian variable selection method for GWAS data with multiple traits. Unlike in BVSR where each trait is analyzed seperately, **vimco** performs a joint analysis for the multiple traits, while accounting for correlation among the multiple traits.
  
 ## Installation
-To install the development version of **vimco**, it's easiest to use the 'devtools' package. Note that REMI depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
+To install the development version of **vimco**, it's easiest to use the 'devtools' package. Note that **vimco** depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
 
 ```{r, fig.show='hold', eval=FALSE}
 library(devtools)
