@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
  
 
 ## Installation
-To install the development version of **vimco**, it's easiest to use the 'devtools' package. Note that REMI depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
+To install the development version of **vimco**, it's easiest to use the 'devtools' package. Note that **vimco** depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
 
 ```{r, fig.show='hold', eval=FALSE}
 library(devtools)
