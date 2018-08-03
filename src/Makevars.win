@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+##<<<<<<< HEAD
+>>>>>>> d77db58a559ef901104a79241ab928316bb7d710
 
 ## With R 3.1.0 or later, you can uncomment the following line to tell R to 
 ## enable compilation with C++11 (where available)
@@ -16,4 +20,9 @@ CXX_STD = CXX11
 
 ##PKG_CXXFLAGS=-I../inst/include -DARMA_64BIT_WORD -fopenmp
 
+<<<<<<< HEAD
+=======
+##=======
+##>>>>>>> eb1caed5a996f0524b8f555ba347db299db0200e
+>>>>>>> d77db58a559ef901104a79241ab928316bb7d710
 PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)

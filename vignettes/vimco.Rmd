@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
  
 
 ## Installation
-To install the development version of **vimco**, it's easiest to use the 'devtools' package. Note that REMI depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
+To install the development version of **vimco**, it's easiest to use the 'devtools' package. Note that **vimco** depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
 
 ```{r, fig.show='hold', eval=FALSE}
 library(devtools)
@@ -102,7 +102,7 @@ tmp <- vimco(stringname, nPheno = 4, fit = TRUE)
 ## Replicate simulation results in Shi et al. (2018)
 All the simulation results can be reproduced by using the code at simulation. Before running simulation to reproduce the results, please familarize yourself with **vimco** using 'VIMCO' vignette. Simulation results can be reproduced by following steps:
 
-- simulation.r This function can be run in a PC, it will output files, named h_0.1_g_0_rhoE_0.2_rhoX_0.8, which contain inference results of each replicate, for all mthods: VIMCO, BVSR, sLMM and mvLMM. 
+- simulation.r This function can be run in a PC, it will output files, named h_0.1_g_0_rhoE_0.2_rhoX_0.8, which contain inference results of each replicate, for all methods: VIMCO, BVSR, sLMM and mvLMM. 
 
 - summary.r This function read all outputs from simulation.r and calculate Power, FDR and AUC. It will output all summary results in _rds_ format, e.g. h_0.1_g_0_rhoE_0.2_rhoX_0.8.rds.
 
