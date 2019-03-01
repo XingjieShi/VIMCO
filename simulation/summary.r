@@ -1,4 +1,5 @@
 library(Rcpp)
+library(qvalue)
 sourceCpp("vb_aux.cpp") 
 source("functions.r")   # used for prerformance evaluation
 
@@ -16,8 +17,7 @@ jobs = assig(n_args)
 gFDR <- 0.1
 
 	type = c("AR", "FGE")[1]
-	if(type == "AR")  rho <- c(0.2, .5, .8)
-    if(type == "FGE") rho <- c(0.5, 0.9, 0.96)
+	rho <- c(0.2, .5, .8)
 
 
 
@@ -30,7 +30,7 @@ main <- function(number0)
 	
 	g <- c(0, .15, .3)[id[1]]
 	
-	rhoX <- c(0)[id[2]]
+	rhoX <- c(.2, .5, .8)[id[2]]
 	
     rhoE <- rho[id[3]]
 
@@ -47,9 +47,10 @@ main <- function(number0)
 
     	R <- length(case)
     	FDR_Ha = PWR_Ha = matrix(0, nrow = R, ncol=4)
-    	FDR_Hb = PWR_Hb = matrix(0, nrow = R, ncol=4)
+    	FDR_Hb = PWR_Hb = matrix(0, nrow = R, ncol=6)
     	COR  = matrix(0, nrow = R, ncol=2)
-    	AUC_Ha = AUC_Hb<- matrix(0, nrow = R, ncol=4)
+    	AUC_Ha <- matrix(0, nrow = R, ncol=4)
+    	AUC_Hb <- matrix(0, nrow = R, ncol=6)
     	for (r in 1:R)	
     	{
     		res = readRDS(case[r])
@@ -57,51 +58,59 @@ main <- function(number0)
 
     		p <- length(res$p_mlm)
     		K <- ncol(res$p_slm) 
-			p_mlm <- matrix(0, nrow = p, ncol = K)
+			p_mlm <- fdr_slm <- matrix(0, nrow = p, ncol = K)
 			for (k in 1:K)	{
 				p_mlm[, k] <- res$p_mlm
+				fdr_slm[, k] <- p.adjust(res$p_slm[,k], "BY") 
 			}
 
+			#fdr_slm <- matrix(lfdr(c(res$p_slm)), ncol=K)
     		COR[r, ] = c(res$cor_Mul, res$cor_Ind)
 
     		AUC_Ha[r, ] = c(calAUC(abs(bet), 1 - c(res$fit_Mul$fdr)),
 						 calAUC(abs(bet), 1 - c(res$fit_Ind$fdr)),
-					 	 calAUC(abs(bet), 1 - p_mlm),
-					 	 calAUC(abs(bet), 1 - res$p_slm)
+					 	 calAUC(abs(bet), 1 - res$p_slm),
+					 	 calAUC(abs(bet), 1 - fdr_slm)
 						)	
     		
     		# Ha: \beta_jk = 0
 			Ha_Mul <- calFDRsnp(fdr2Fdr(res$fit_Mul$fdr), gFDR,      res$bet, res$group) 	
 			Ha_Ind <- calFDRsnp(fdr2Fdr(res$fit_Ind$fdr), gFDR,      res$bet, res$group) 	
-			Ha_Slm <- calFDRsnp(res$p_slm,                0.05/p/K,  res$bet, res$group) 
-			Ha_Mlm <- calFDRsnp(p_mlm,                    0.05/p,    res$bet, res$group) 
+			Ha_Slm1 <- calFDRsnp(res$p_slm,                0.05/p/K, res$bet, res$group) 
+			Ha_Slm2 <- calFDRsnp(fdr_slm, gFDR,  res$bet, res$group)
+			#Ha_Mlm <- calFDRsnp(lfdr(p_mlm),          gFDR,  res$bet, res$group)
 
- 			FDR_Ha[r, ] = c(Ha_Mul$FDR,   Ha_Ind$FDR,   Ha_Mlm$FDR,   Ha_Slm$FDR)
-			PWR_Ha[r, ] = c(Ha_Mul$power, Ha_Ind$power, Ha_Mlm$power, Ha_Slm$power)
+ 			FDR_Ha[r, ] = c(Ha_Mul$FDR,   Ha_Ind$FDR,   Ha_Slm1$FDR,   Ha_Slm2$FDR)
+			PWR_Ha[r, ] = c(Ha_Mul$power, Ha_Ind$power, Ha_Slm1$power, Ha_Slm2$power)
 
 
 			# Hb: \beta_j = 0
 			bet_Hb <- 1 * (rowSums(res$bet != 0) != 0)
-   			fdr_Mul_Hb <- apply(res$fit_Mul$fdr, 1, "min")
-			fdr_Ind_Hb <- apply(res$fit_Ind$fdr, 1, "min")
+   			fdr_Mul_Hb <- apply(fdr2Fdr(res$fit_Mul$fdr), 1, "min")
+			fdr_Ind_Hb <- apply(fdr2Fdr(res$fit_Ind$fdr), 1, "min")
 			p_slm_Hb <- apply(res$p_slm, 1, "min")
+			fdr_slm_Hb <- apply(fdr_slm, 1, "min")
 
-			Hb_Slm <- calFDRsnp(data.matrix(p_slm_Hb),  0.05/p, data.matrix(bet_Hb), res$group)
-   			Hb_Mlm <- calFDRsnp(data.matrix(res$p_mlm), 0.05/p, data.matrix(bet_Hb), res$group)
+			Hb_Slm1 <- calFDRsnp(data.matrix(p_slm_Hb),  0.05/p, data.matrix(bet_Hb), res$group)
+			Hb_Slm2 <- calFDRsnp(data.matrix(fdr_slm_Hb),  gFDR, data.matrix(bet_Hb), res$group)
+
+   			Hb_Mlm1 <- calFDRsnp(data.matrix(res$p_mlm), 0.05/p, data.matrix(bet_Hb), res$group)
+   			Hb_Mlm2 <- calFDRsnp(fdr2Fdr(data.matrix(lfdr(res$p_mlm))), gFDR, data.matrix(bet_Hb), res$group)
 
  			Hb_Mul <- calFDRsnp(data.matrix(fdr_Mul_Hb), gFDR,  data.matrix(bet_Hb), res$group)
    			Hb_Ind <- calFDRsnp(data.matrix(fdr_Ind_Hb), gFDR,  data.matrix(bet_Hb), res$group)
 
- 			FDR_Hb[r, ] = c(Hb_Mul$FDR,   Hb_Ind$FDR,   Hb_Mlm$FDR, Hb_Slm$FDR)
- 			PWR_Hb[r, ] = c(Hb_Mul$power, Hb_Ind$power, Hb_Mlm$power, Hb_Slm$power)
+ 			FDR_Hb[r, ] = c(Hb_Mul$FDR,   Hb_Ind$FDR,   Hb_Mlm1$FDR, Hb_Mlm2$FDR, Hb_Slm1$FDR, Hb_Slm2$FDR)
+ 			PWR_Hb[r, ] = c(Hb_Mul$power, Hb_Ind$power, Hb_Mlm1$power, Hb_Mlm2$power, Hb_Slm1$power, Hb_Slm2$power)
 
 
  			AUC_Hb[r, ] = c(calAUC(abs(bet_Hb), 1 - fdr_Mul_Hb),
 						 	calAUC(abs(bet_Hb), 1 - fdr_Ind_Hb),
 					 	 	calAUC(abs(bet_Hb), 1 - res$p_mlm),
-					 	 	calAUC(abs(bet_Hb), 1 - p_slm_Hb)
+					 	 	calAUC(abs(bet_Hb), 1 - lfdr(res$p_mlm)),
+					 	 	calAUC(abs(bet_Hb), 1 - p_slm_Hb),
+					 	 	calAUC(abs(bet_Hb), 1 - fdr_slm_Hb)
 						   )
-
 		}	
 
 		measure = list()
