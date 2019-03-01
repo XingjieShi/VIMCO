@@ -29,9 +29,9 @@ using namespace Rcpp;
 using namespace arma;
 
 
-void getFourGentype(int* geno, std::bitset<8> bits);
+void getFourGentype(char* geno, std::bitset<8> bits);
 vector<string> read_snpnames(string filename, int P);
-void readPlink(string stringname, int N, int P, unsigned* X);
+void readPlink(string stringname, int N, int P, char* X);
 int getLineNum(string filename);
 void ReadPlinkFamFile3(std::string stringname, CharacterVector FID, CharacterVector IID,
 	NumericMatrix pheno, int nrows, int nPheno);
