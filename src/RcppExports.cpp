@@ -22,12 +22,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // emInd
-List emInd(arma::fmat X, arma::mat Y, Rcpp::Nullable<Rcpp::NumericMatrix> mu0, Rcpp::Nullable<Rcpp::NumericMatrix> Alpha0, Rcpp::Nullable<Rcpp::NumericVector> sigb0, Rcpp::Nullable<Rcpp::NumericVector> sige0, int maxit, double epsStopLogLik);
+List emInd(arma::mat X, arma::mat Y, Rcpp::Nullable<Rcpp::NumericMatrix> mu0, Rcpp::Nullable<Rcpp::NumericMatrix> Alpha0, Rcpp::Nullable<Rcpp::NumericVector> sigb0, Rcpp::Nullable<Rcpp::NumericVector> sige0, int maxit, double epsStopLogLik);
 RcppExport SEXP _vimco_emInd(SEXP XSEXP, SEXP YSEXP, SEXP mu0SEXP, SEXP Alpha0SEXP, SEXP sigb0SEXP, SEXP sige0SEXP, SEXP maxitSEXP, SEXP epsStopLogLikSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::fmat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type mu0(mu0SEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type Alpha0(Alpha0SEXP);
@@ -40,12 +40,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // emMultiple
-List emMultiple(arma::fmat X, arma::mat Y, Rcpp::Nullable<Rcpp::NumericMatrix> mu0, Rcpp::Nullable<Rcpp::NumericVector> sigb0, Rcpp::Nullable<Rcpp::NumericMatrix> Theta0, Rcpp::Nullable<Rcpp::NumericVector> Lambda0, Rcpp::Nullable<Rcpp::NumericMatrix> Alpha0, bool fixlambda, int maxit, double epsStopLogLik);
+List emMultiple(arma::mat X, arma::mat Y, Rcpp::Nullable<Rcpp::NumericMatrix> mu0, Rcpp::Nullable<Rcpp::NumericVector> sigb0, Rcpp::Nullable<Rcpp::NumericMatrix> Theta0, Rcpp::Nullable<Rcpp::NumericVector> Lambda0, Rcpp::Nullable<Rcpp::NumericMatrix> Alpha0, bool fixlambda, int maxit, double epsStopLogLik);
 RcppExport SEXP _vimco_emMultiple(SEXP XSEXP, SEXP YSEXP, SEXP mu0SEXP, SEXP sigb0SEXP, SEXP Theta0SEXP, SEXP Lambda0SEXP, SEXP Alpha0SEXP, SEXP fixlambdaSEXP, SEXP maxitSEXP, SEXP epsStopLogLikSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::fmat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type mu0(mu0SEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type sigb0(sigb0SEXP);

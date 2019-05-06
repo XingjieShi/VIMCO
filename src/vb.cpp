@@ -17,7 +17,7 @@ using namespace arma;
 
 
 // [[Rcpp::export()]]
-List emInd (arma::fmat X,
+List emInd (arma::mat X,
             arma::mat Y,
             Rcpp::Nullable<Rcpp::NumericMatrix> mu0    = R_NilValue, 
             Rcpp::Nullable<Rcpp::NumericMatrix> Alpha0 = R_NilValue,
@@ -34,7 +34,7 @@ List emInd (arma::fmat X,
 	int i=0, j=0, k=0;
 	
     //centeralize X and Y
-    fmat xmean = mean(X);
+    mat xmean = mean(X);
     for (i = 0; i < n; i++) {
   		for (j = 0; j < p; j++) {
   			X(i,j) -= xmean(j);
@@ -85,12 +85,12 @@ List emInd (arma::fmat X,
 	}	
 
     // precomputation
-    fvec xx(p); 
+    vec xx(p); 
     for (j=0; j < p; j++) {
 		 xx(j) = sum(X.col(j) % X.col(j));
 	}   	
 
-	fmat XY = X.t() * conv_to<fmat>::from(Y);
+	mat XY = X.t() * Y;
 	mat ytilde (n, K);
 	vec ytildekj(n, fill::zeros);
 
@@ -184,7 +184,7 @@ List emInd (arma::fmat X,
 
 
 // [[Rcpp::export()]]
-List emMultiple (arma::fmat X,
+List emMultiple (arma::mat X,
                 arma::mat Y,
             	Rcpp::Nullable<Rcpp::NumericMatrix> mu0     = R_NilValue,
                	Rcpp::Nullable<Rcpp::NumericVector> sigb0   = R_NilValue,
@@ -203,7 +203,7 @@ List emMultiple (arma::fmat X,
 	int i=0, j=0, k=0;
 	
     //centeralize X and Y
-    fmat xmean = mean(X);
+    mat xmean = mean(X);
     for (i = 0; i < N; i++) {
   		for (j = 0; j < p; j++) {
   			X(i,j) -= xmean(j);
@@ -272,7 +272,7 @@ List emMultiple (arma::fmat X,
 		}
 	}	
     // precomputation
-	fvec xx(p); 
+	vec xx(p); 
     for (j=0; j < p; j++) {
 		 xx(j) = sum(X.col(j) % X.col(j));
 	}   	
@@ -432,11 +432,11 @@ List emIndPlink (char* Xtmp, unsigned long long p,
 	//fvec tmp = vectorise(X);
 	//float* Xtmp = &tmp[0];
    
-    float* mean_x = new float[p];
-    float* sd_x = new float[p];
+    double* mean_x = new double[p];
+    double* sd_x = new double[p];
     Centering(Xtmp, mean_x, sd_x, n, p);
-    fmat xmean(mean_x, 1, p, false, true); 
-    fvec xsd(sd_x, p, false, true);
+    mat xmean(mean_x, 1, p, false, true); 
+    vec xsd(sd_x, p, false, true);
     //centeralize X and Y
     //fvec xmean(p), xsd(p);
     //Centering(Xtmp, xmean, xsd, n, p);
@@ -493,9 +493,9 @@ List emIndPlink (char* Xtmp, unsigned long long p,
 	
 
     // precomputation
-    fvec xx = xtx_diag(Xtmp, n, p, xmean, xsd);
+    vec xx = xtx_diag(Xtmp, n, p, xmean, xsd);
 
-	fmat XY = MdotProd(Xtmp, Y, p, xmean, xsd);
+	mat XY = MdotProd(Xtmp, Y, p, xmean, xsd);
 	mat ytilde (n, K, fill::zeros);
 	mat ytilde_j(n, K, fill::zeros);
 
@@ -612,11 +612,11 @@ List emMultiplePlink (char* Xtmp, unsigned long long p,
 	
    
     //centeralize X and Y
-    float* mean_x = new float[p];
-    float* sd_x = new float[p];
+    double* mean_x = new double[p];
+    double* sd_x = new double[p];
     Centering(Xtmp, mean_x, sd_x, N, p);
-    fmat xmean(mean_x, 1, p, false); 
-    fvec xsd(sd_x, p, false);
+    mat xmean(mean_x, 1, p, false); 
+    vec xsd(sd_x, p, false);
     /*fmat xmean = mean(X);
     for (i = 0; i < N; i++) {
   		for (j = 0; j < p; j++) {
@@ -687,7 +687,7 @@ List emMultiplePlink (char* Xtmp, unsigned long long p,
 	}	
 
     // precomputation
-	fvec xx = xtx_diag(Xtmp, N, p, xmean, xsd);
+	vec xx = xtx_diag(Xtmp, N, p, xmean, xsd);
 	/*fvec xx(p); 
     for (j=0; j < p; j++) {
 		 xx(j) = sum(X.col(j) % X.col(j));

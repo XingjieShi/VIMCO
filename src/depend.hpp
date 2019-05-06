@@ -13,34 +13,34 @@ using namespace arma;
 
 double logpexp(double x);
 
-fvec  xtx_diag(char* Xtmp, int n, int p, arma::fmat xmean, arma::fvec xsd);
+vec  xtx_diag(char* Xtmp, int n, int p, arma::mat xmean, arma::vec xsd);
 
-vec VdotC (char* x, double c, int n, float xmean_j, float xsd_j);
-
-
-float VdotProd (char* x, arma::mat y, int n, float xmean_j, float xsd_j);
+vec VdotC (char* x, double c, int n, double xmean_j, double xsd_j);
 
 
-fmat MdotProd(char* Xtmp, arma::mat Y, int p, arma::fmat xmean, arma::fvec xsd);
+double VdotProd (char* x, arma::mat y, int n, double xmean_j, double xsd_j);
 
 
-mat XdotB(char* Xtmp, arma::mat B, int n, arma::fmat xmean, arma::fvec xsd);
+mat MdotProd(char* Xtmp, arma::mat Y, int p, arma::mat xmean, arma::vec xsd);
 
-mat Vouter(arma::rowvec x, char* y, int n, float mean_j, float sd_j);
 
-void Centering(char* Xtmp, float* meanOut, float* sdOut, int n, int p);
+mat XdotB(char* Xtmp, arma::mat B, int n, arma::mat xmean, arma::vec xsd);
 
-double LogLikInd(arma::fvec& xx, arma::mat& E, 
+mat Vouter(arma::rowvec x, char* y, int n, double mean_j, double sd_j);
+
+void Centering(char* Xtmp, double* meanOut, double* sdOut, int n, int p);
+
+double LogLikInd(arma::vec& xx, arma::mat& E, 
            int p,      int    K,
            arma::mat& mu,     arma::mat&    s, 
            arma::vec& sige,   arma::vec&    sigb, 
 		   arma::mat& Alpha,  arma::vec& alpha);
 
-double uThree(arma::mat& Theta, arma::rowvec mu_j, arma::rowvec Alpha_j, float XtX_jj);
+double uThree(arma::mat& Theta, arma::rowvec mu_j, arma::rowvec Alpha_j, double XtX_jj);
 
-double mu_jkThree(arma::rowvec theta_k, arma::rowvec Alpha_j, arma::rowvec mu_j, float XtX_jj, int k);
+double mu_jkThree(arma::rowvec theta_k, arma::rowvec Alpha_j, arma::rowvec mu_j, double XtX_jj, int k);
 
-double LogLikMultiple(arma::fvec& xx, arma::mat& E, 
+double LogLikMultiple(arma::vec& xx, arma::mat& E, 
            int p,      int    K,
            arma::mat& mu,     arma::mat&    s, 
            arma::mat& Theta,  arma::vec&    sigb, 

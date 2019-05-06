@@ -19,21 +19,21 @@ double logpexp(double x) {
     return y;
 }
 
-fvec  xtx_diag(char* Xtmp, int n, int p, fmat xmean, fvec xsd) {
-    fvec y(p, fill::zeros);
+vec  xtx_diag(char* Xtmp, int n, int p, mat xmean, vec xsd) {
+    vec y(p, fill::zeros);
     for (int j = 0; j < p; ++j)	{
     	char* col_j = Xtmp + j * n;
     	
     	for (int i = 0; i < n; ++i)
     	{
-    		float tmp = (col_j[i] - xmean(0, j))/xsd[j];
+    		double tmp = (col_j[i] - xmean(0, j))/xsd[j];
     	  	y(j) += tmp * tmp;
     	}
     }
     return y;
 }
 
-vec VdotC (char* x, double c, int n, float xmean_j, float xsd_j) {
+vec VdotC (char* x, double c, int n, double xmean_j, double xsd_j) {
     vec z(n);
     for (int i = 0; i < n; i++)	{
         z[i] = (x[i] - xmean_j)/xsd_j * c;
@@ -42,21 +42,21 @@ vec VdotC (char* x, double c, int n, float xmean_j, float xsd_j) {
 }
 
 
-float VdotProd (char* x, mat y, int n, float xmean_j, float xsd_j) {
-    float z = 0;
+double VdotProd (char* x, mat y, int n, double xmean_j, double xsd_j) {
+    double z = 0;
     for (int i = 0; i < n; i++)	{
-    	float f = (float) y(i, 0);
+    	double f = y(i, 0);
         z += (x[i] - xmean_j)/xsd_j * f;
     }
     return z;
 }
 
 
-fmat MdotProd(char* Xtmp, mat Y, int p, fmat xmean, fvec xsd)
+mat MdotProd(char* Xtmp, mat Y, int p, mat xmean, vec xsd)
 {
 	int n = Y.n_rows;
     int K = Y.n_cols;
-    fmat XtY(p, K);
+    mat XtY(p, K);
     for (int j = 0; j < p; j++) {
     	char* col_j = Xtmp + j * n;
         for (int k = 0; k < K; k++) {
@@ -67,7 +67,7 @@ fmat MdotProd(char* Xtmp, mat Y, int p, fmat xmean, fvec xsd)
 }
 
 
-mat XdotB(char* Xtmp, mat B, int n, fmat xmean, fvec xsd)
+mat XdotB(char* Xtmp, mat B, int n, mat xmean, vec xsd)
 {	
 	int p = B.n_rows;
     int K = B.n_cols;
@@ -91,7 +91,7 @@ mat XdotB(char* Xtmp, mat B, int n, fmat xmean, fvec xsd)
 }
 
 
-mat Vouter(rowvec x, char* y, int n, float mean_j, float sd_j)	{
+mat Vouter(rowvec x, char* y, int n, double mean_j, double sd_j)	{
 	int K = x.n_elem;
 	mat outer(n, K, fill::zeros);
 	for (int k = 0; k < K; ++k)
@@ -104,9 +104,9 @@ mat Vouter(rowvec x, char* y, int n, float mean_j, float sd_j)	{
 	return outer;
 }
 
-void Centering(char* Xtmp, float* meanOut, float* sdOut, int n, int p)	{
-	float value;
-	fvec mean(p), sd(p);
+void Centering(char* Xtmp, double* meanOut, double* sdOut, int n, int p)	{
+	double value;
+	vec mean(p), sd(p);
 	for (int j = 0; j < p; ++j)	{
 		mean[j] = 0;
 		sd[j] = 0;
@@ -125,7 +125,7 @@ void Centering(char* Xtmp, float* meanOut, float* sdOut, int n, int p)	{
 
 
 
-double uThree(mat& Theta, rowvec mu_j, rowvec Alpha_j, float XtX_jj){
+double uThree(mat& Theta, rowvec mu_j, rowvec Alpha_j, double XtX_jj){
 	int K = Theta.n_cols;
 	double ret = 0; 
 	for (int s=0; s < K; s++) {
@@ -144,7 +144,7 @@ double uThree(mat& Theta, rowvec mu_j, rowvec Alpha_j, float XtX_jj){
 
 
 
-double mu_jkThree(rowvec theta_k, rowvec Alpha_j, rowvec mu_j, float XtX_jj, int k){
+double mu_jkThree(rowvec theta_k, rowvec Alpha_j, rowvec mu_j, double XtX_jj, int k){
 	int K = theta_k.n_elem;
 	double ret = 0;
 	for (int t=0; t < K; t++) {
@@ -157,7 +157,7 @@ double mu_jkThree(rowvec theta_k, rowvec Alpha_j, rowvec mu_j, float XtX_jj, int
 }
 
 
-double LogLikInd(fvec& xx, mat& E, 
+double LogLikInd(vec& xx, mat& E, 
            int p,      int    K,
            mat& mu,     mat&    s, 
            vec& sige,   vec&    sigb, 
@@ -216,7 +216,7 @@ double LogLikInd(fvec& xx, mat& E,
 
 
 
-double LogLikMultiple(fvec& xx, mat& E, 
+double LogLikMultiple(vec& xx, mat& E, 
            int p,      int    K,
            mat& mu,     mat&    s, 
            mat& Theta,  vec&    sigb, 
