@@ -10,7 +10,7 @@
 #' @param Theta0 An inital precision matrix (K by K) for errrors in multiple traits.
 #' @param Lambda0 Inital values for variational means (p by 1) of nonzero indicators.
 #' @param Alpha0 Initial values for the variational mean of nonzero indicators (p by K).
-#' @param fixlambda a test parameter, always set to be true.ı
+#' @param fixlambda a test parameter, always set to be true.
 #' @param maxit The maximal iteration in the VBEM algorithm.
 #' @param epsStopLogLik The tolerance for convergence.
 #'
