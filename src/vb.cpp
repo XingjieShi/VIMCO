@@ -875,7 +875,7 @@ Rcpp::List readPlink(std::string stringname, int nPheno){
 	t = clock();
 	// save the snp names.
 	t = clock() - t;
-	cout << "## Time of loading files is" << (((float)t) / CLOCKS_PER_SEC) << " seconds." << endl;
+	cout << "## Time of loading files is " << (((float)t) / CLOCKS_PER_SEC) << " seconds." << endl;
 	List output = List::create(
 							   Rcpp::Named("X")    = X, 
 						       Rcpp::Named("Y")    = Y,
