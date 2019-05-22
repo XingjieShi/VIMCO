@@ -31,7 +31,8 @@ using namespace arma;
 
 void getFourGentype(char* geno, std::bitset<8> bits);
 vector<string> read_snpnames(string filename, int P);
-void readPlink(string stringname, int N, int P, char* X);
+void readBed_ptr(string stringname, int N, int P, char* X);
+void readBed(string stringname, int N, int P, unsigned* X);
 int getLineNum(string filename);
 void ReadPlinkFamFile3(std::string stringname, CharacterVector FID, CharacterVector IID,
 	NumericMatrix pheno, int nrows, int nPheno);

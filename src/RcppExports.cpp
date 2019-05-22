@@ -6,21 +6,6 @@
 
 using namespace Rcpp;
 
-// ReadPlinkFamFile3
-void ReadPlinkFamFile3(std::string stringname, CharacterVector FID, CharacterVector IID, NumericMatrix pheno, int nrows, int nPheno);
-RcppExport SEXP _vimco_ReadPlinkFamFile3(SEXP stringnameSEXP, SEXP FIDSEXP, SEXP IIDSEXP, SEXP phenoSEXP, SEXP nrowsSEXP, SEXP nPhenoSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type stringname(stringnameSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type FID(FIDSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type IID(IIDSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type pheno(phenoSEXP);
-    Rcpp::traits::input_parameter< int >::type nrows(nrowsSEXP);
-    Rcpp::traits::input_parameter< int >::type nPheno(nPhenoSEXP);
-    ReadPlinkFamFile3(stringname, FID, IID, pheno, nrows, nPheno);
-    return R_NilValue;
-END_RCPP
-}
 // emInd
 List emInd(arma::mat X, arma::mat Y, Rcpp::Nullable<Rcpp::NumericMatrix> mu0, Rcpp::Nullable<Rcpp::NumericMatrix> Alpha0, Rcpp::Nullable<Rcpp::NumericVector> sigb0, Rcpp::Nullable<Rcpp::NumericVector> sige0, int maxit, double epsStopLogLik);
 RcppExport SEXP _vimco_emInd(SEXP XSEXP, SEXP YSEXP, SEXP mu0SEXP, SEXP Alpha0SEXP, SEXP sigb0SEXP, SEXP sige0SEXP, SEXP maxitSEXP, SEXP epsStopLogLikSEXP) {
@@ -59,6 +44,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// readPlink
+Rcpp::List readPlink(std::string stringname, int nPheno);
+RcppExport SEXP _vimco_readPlink(SEXP stringnameSEXP, SEXP nPhenoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type stringname(stringnameSEXP);
+    Rcpp::traits::input_parameter< int >::type nPheno(nPhenoSEXP);
+    rcpp_result_gen = Rcpp::wrap(readPlink(stringname, nPheno));
+    return rcpp_result_gen;
+END_RCPP
+}
 // vimco
 Rcpp::List vimco(std::string stringname, int nPheno, bool fit, bool IndAsInit, Rcpp::Nullable<Rcpp::NumericMatrix> mu0, Rcpp::Nullable<Rcpp::NumericVector> sigb0, Rcpp::Nullable<Rcpp::NumericMatrix> Theta0, Rcpp::Nullable<Rcpp::NumericVector> Lambda0, Rcpp::Nullable<Rcpp::NumericMatrix> Alpha0, bool fixlambda, int maxit, double epsStopLogLik);
 RcppExport SEXP _vimco_vimco(SEXP stringnameSEXP, SEXP nPhenoSEXP, SEXP fitSEXP, SEXP IndAsInitSEXP, SEXP mu0SEXP, SEXP sigb0SEXP, SEXP Theta0SEXP, SEXP Lambda0SEXP, SEXP Alpha0SEXP, SEXP fixlambdaSEXP, SEXP maxitSEXP, SEXP epsStopLogLikSEXP) {
@@ -83,9 +80,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_vimco_ReadPlinkFamFile3", (DL_FUNC) &_vimco_ReadPlinkFamFile3, 6},
     {"_vimco_emInd", (DL_FUNC) &_vimco_emInd, 8},
     {"_vimco_emMultiple", (DL_FUNC) &_vimco_emMultiple, 10},
+    {"_vimco_readPlink", (DL_FUNC) &_vimco_readPlink, 2},
     {"_vimco_vimco", (DL_FUNC) &_vimco_vimco, 12},
     {NULL, NULL, 0}
 };

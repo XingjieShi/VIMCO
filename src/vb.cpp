@@ -838,6 +838,53 @@ List emMultiplePlink (char* Xtmp, unsigned long long p,
 }
 
 
+// [[Rcpp::export()]]
+Rcpp::List readPlink(std::string stringname, int nPheno){  
+	clock_t t;
+	// plink file prefix: stringname
+
+	cout << "## Start loading fam file ... " << endl;
+	// load phenotype (fam file)
+	string famfile = stringname;
+	famfile += ".fam";
+	int N = getLineNum(famfile);
+
+	IntegerVector sex(N);
+	NumericMatrix pheno(N,nPheno);
+	CharacterVector FID(N), IID(N);
+	ReadPlinkFamFile3(famfile, FID, IID, pheno, N, nPheno);
+	
+	cout << "## Start loading genotype file ... " << endl;
+	//read plink file (plink bim bed fam files)
+	string bimfile = stringname;
+	bimfile += ".bim";
+	int P =  getLineNum(bimfile);
+	unsigned* Xtmp = new unsigned[ N * P];
+
+
+	
+	readBed(stringname, N, P, Xtmp);
+	arma::Mat<unsigned> X(Xtmp, N, P, false, false);
+	X.replace(3, 0);
+ 	
+
+	vector<string> snps = read_snpnames(bimfile, P);
+	
+	arma::mat Y = as<arma::mat>(pheno);
+	
+	t = clock();
+	// save the snp names.
+	t = clock() - t;
+	cout << "## Time of loading files is" << (((float)t) / CLOCKS_PER_SEC) << " seconds." << endl;
+	List output = List::create(
+							   Rcpp::Named("X")    = X, 
+						       Rcpp::Named("Y")    = Y,
+							   Rcpp::Named("time")   = ((float)t) / CLOCKS_PER_SEC );
+
+	return output;
+}
+
+
 
 // [[Rcpp::export()]]
 Rcpp::List vimco(std::string stringname, int nPheno, 
@@ -875,7 +922,7 @@ Rcpp::List vimco(std::string stringname, int nPheno,
 	char* Xtmp = new char[size];
 
 	
-	readPlink(stringname, N, P, Xtmp);
+	readBed_ptr(stringname, N, P, Xtmp);
 	//arma::Mat<char> X(Xtmp, N, P, false, false);
  	//X.replace(3, 0);
 	//fvec Xf = conv_to<fvec>::from(X);
