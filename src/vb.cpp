@@ -879,6 +879,9 @@ Rcpp::List readPlink(std::string stringname, int nPheno){
 	List output = List::create(
 							   Rcpp::Named("X")    = X, 
 						       Rcpp::Named("Y")    = Y,
+						       Rcpp::Named("FID") = FID,
+						       Rcpp::Named("IID") = IID,
+						       Rcpp::Named("snps") = snps,
 							   Rcpp::Named("time")   = ((float)t) / CLOCKS_PER_SEC );
 
 	return output;
