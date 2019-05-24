@@ -21,4 +21,4 @@ Before running simulation to reproduce the results, please familarize yourself w
 
 
 ## Reference
-[VIMCO: Variational Inference for Multiple Correlated Outcomes in Genome-wide Association Studies](https://arxiv.org/abs/1807.10467)
+[VIMCO: Variational Inference for Multiple Correlated Outcomes in Genome-wide Association Studies](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btz167/5372680)
