@@ -2,7 +2,7 @@
 title: "VIMCO: Variational Inference for Multiple Correlated Outcomes in Genome-wide Association Studies"
 author: "Xingjie Shi"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
